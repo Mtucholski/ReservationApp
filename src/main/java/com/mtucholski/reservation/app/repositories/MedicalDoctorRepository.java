@@ -9,7 +9,6 @@ public interface MedicalDoctorRepository {
     List<MedicalDoctor> findAll();
     List<MedicalDoctor> findBySpecialtyName(String specialtyName);
     MedicalDoctor findByLicenseNumber(int license);
-    MedicalDoctor findByLastName(String lastName);
     MedicalDoctor findById(int id);
     void save(MedicalDoctor doctor);
     void delete(MedicalDoctor doctor);

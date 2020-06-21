@@ -35,6 +35,6 @@ public class Clinic extends BaseEntity {
     @JoinTable(name = "doctors", joinColumns = @JoinColumn(name = "doctor_id"))
     private List<MedicalDoctor> doctors;
 
-    @OneToMany (targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "clinic")
-    private List<Address> clinicAddress;
+    @ManyToOne (targetEntity = Address.class, cascade = CascadeType.ALL)
+    private Address clinicAddress;
 }

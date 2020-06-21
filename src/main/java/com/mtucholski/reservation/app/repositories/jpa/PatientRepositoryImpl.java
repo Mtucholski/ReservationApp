@@ -3,6 +3,7 @@ package com.mtucholski.reservation.app.repositories.jpa;
 import com.mtucholski.reservation.app.model.Patient;
 import com.mtucholski.reservation.app.repositories.PatientRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Repository
 @Slf4j
+@Profile("jpa")
 public class PatientRepositoryImpl implements PatientRepository {
 
     @PersistenceContext
