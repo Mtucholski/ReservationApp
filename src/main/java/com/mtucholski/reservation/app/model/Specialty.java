@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Entity
 @Table
@@ -22,15 +21,5 @@ public class Specialty extends BaseEntity {
     private String specialtyName;
 
     @ManyToOne(optional = false,fetch = FetchType.LAZY, targetEntity = MedicalDoctor.class, cascade = CascadeType.PERSIST)
-    private List <MedicalDoctor> medicalDoctors;
-
-    public List<MedicalDoctor> getMedicalDoctors() {
-
-        return medicalDoctors;
-    }
-
-    public void setMedicalDoctors(List<MedicalDoctor> medicalDoctors) {
-
-        this.medicalDoctors = medicalDoctors;
-    }
+    private MedicalDoctor medicalDoctors;
 }

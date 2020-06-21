@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "clinic")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
@@ -32,10 +32,9 @@ public class Clinic extends BaseEntity {
     private String clinicName;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = MedicalDoctor.class )
-    @JoinTable(name = "MedicalDoctor", joinColumns = @JoinColumn(name = "MedicalDoctor_id"),
-            inverseJoinColumns = @JoinColumn(name = "Clinic_id"))
+    @JoinTable(name = "doctors", joinColumns = @JoinColumn(name = "doctor_id"))
     private List<MedicalDoctor> doctors;
 
-    @OneToMany (targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "clinics")
+    @OneToMany (targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "clinic")
     private List<Address> clinicAddress;
 }

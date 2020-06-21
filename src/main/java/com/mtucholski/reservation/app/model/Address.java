@@ -1,6 +1,5 @@
 package com.mtucholski.reservation.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mtucholski.reservation.app.json.CustomAddressDeserializer;
@@ -9,16 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Table
@@ -53,34 +47,6 @@ public class Address extends BaseEntity {
     @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Patient.class, cascade = CascadeType.ALL, mappedBy = "patientAddress")
     private Patient patient;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Clinic.class, fetch = FetchType.LAZY)
-    private List<Clinic> clinics;
-
-    @JsonIgnore
-    public List<Clinic> getClinicsInternal(){
-
-        if (this.clinics == null){
-
-            this.clinics = new ArrayList<>();
-        }
-
-        return this.clinics;
-    }
-
-    public List<Clinic> getClinics() {
-
-        List<Clinic> sortedClinics = new ArrayList<>(getClinicsInternal());
-        PropertyComparator.sort(sortedClinics, new MutableSortDefinition("address",true, true));
-        return Collections.unmodifiableList(sortedClinics);
-    }
-
-    public void setClinics(List<Clinic> clinics) {
-
-        this.clinics = clinics;
-    }
-
-    public void addClinic(Clinic clinic){
-
-        getClinicsInternal().add(clinic);
-    }
+    @ManyToOne(targetEntity = Clinic.class, cascade =CascadeType.ALL, fetch = FetchType.LAZY)
+    private Clinic clinic;
 }

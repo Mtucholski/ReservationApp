@@ -10,7 +10,6 @@ import com.mtucholski.reservation.app.model.Clinic;
 import com.mtucholski.reservation.app.model.Patient;
 
 import java.io.IOException;
-import java.util.Collections;
 
 public class CustomAddressDeserializer extends StdDeserializer<Address> {
 
@@ -50,7 +49,7 @@ public class CustomAddressDeserializer extends StdDeserializer<Address> {
         address.setStreetNumber(streetNumber);
         address.setFlatNumber(flatNumber);
         address.setPatient(patient);
-        address.setClinics(Collections.singletonList(clinic));
+        address.setClinic(clinic);
 
         return address;
     }

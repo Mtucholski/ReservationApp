@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "roles", uniqueConstraints = @UniqueConstraint(columnNames ="username"))
+@Table( name ="users", uniqueConstraints = @UniqueConstraint(columnNames ="username"))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

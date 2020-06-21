@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.mtucholski.reservation.app.model.Address;
-import com.mtucholski.reservation.app.model.Clinic;
 
 import java.io.IOException;
 
@@ -33,15 +32,8 @@ public class CustomAddressSerializer extends StdSerializer<Address> {
         jsonGenerator.writeStringField("flat_number", address.getFlatNumber());
         jsonGenerator.writeObject(address.getPatient());
 
-        jsonGenerator.writeArrayFieldStart("clinic");
-        for (Clinic clinic : address.getClinics()){
-
-            jsonGenerator.writeStartObject();
-            jsonGenerator.writeNumberField("clinic_id", clinic.getId());
-            jsonGenerator.writeStringField("clinic_name", clinic.getClinicName());
-            jsonGenerator.writeEndObject();
-        }
-        jsonGenerator.writeEndArray();
+        jsonGenerator.writeObjectField("clinic", address.getClinic());
+        jsonGenerator.writeEndObject();
         jsonGenerator.writeEndObject();
     }
 }
