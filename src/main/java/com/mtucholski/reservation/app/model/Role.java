@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
-@Table( name ="users", uniqueConstraints = @UniqueConstraint(columnNames ="username"))
+@Entity(name = "roles")
+@Table( name ="roles", uniqueConstraints = @UniqueConstraint(columnNames ="username"))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

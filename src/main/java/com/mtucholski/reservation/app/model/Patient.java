@@ -14,7 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
-@Entity
+@Entity(name = "patients")
 @Table(name = "patients", uniqueConstraints = @UniqueConstraint(columnNames = {"personal_id", "email"}))
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -31,7 +31,7 @@ public class Patient extends Person {
     private String email;
 
     @ManyToMany(fetch = FetchType.LAZY,targetEntity = Visit.class, cascade = CascadeType.ALL)
-    @JoinTable(name="visits", joinColumns = @JoinColumn(name = "visit_id"))
+    @JoinTable(name="visit", joinColumns = @JoinColumn(name = "visit_id"))
     private Set<Visit> visits;
 
     @OneToOne(optional = false, targetEntity = Address.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

@@ -48,7 +48,7 @@ private EntityManager manager;
     public List<Visit> findByDate(LocalDate date) {
 
         log.info("searching for visit by date");
-        Query query = this.manager.createQuery("select visitDate from Visit where visitDate = :date");
+        Query query = this.manager.createQuery("select visit from Visit visit where visit.visitDate = :date");
         query.setParameter("date", date);
         return query.getResultList();
 
@@ -58,7 +58,7 @@ private EntityManager manager;
     public List<Visit> findAll() {
 
         log.info("finding all visits for report");
-        return (List<Visit>) this.manager.createQuery("select visitDate from Visit");
+        return (List<Visit>) this.manager.createQuery("select visit from Visit visit");
     }
 
     @Override

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
-@Table
+@Entity(name = "specialties")
+@Table(name = "specialties")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

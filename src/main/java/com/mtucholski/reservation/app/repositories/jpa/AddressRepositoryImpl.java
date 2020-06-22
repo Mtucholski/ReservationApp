@@ -43,7 +43,7 @@ public class AddressRepositoryImpl implements AddressRepository {
     public void update(Address address) {
 
         log.info("finding address with id:" + "" + address.getId());
-        List<Address> addresses = this.manager.createQuery("select address from Address address").getResultList();
+        List<Address> addresses = this.manager.createQuery("select address from address address").getResultList();
         Optional<Address> optionalAddress = addresses.stream().filter(a -> a.getId().equals(address.getId())).findFirst();
 
         log.info("checking if address exists");

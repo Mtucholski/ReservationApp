@@ -15,8 +15,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "MedicalAppointment")
+@Entity(name = "Visit")
+@Table(name = "Visit")
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor

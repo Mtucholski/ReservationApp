@@ -22,21 +22,21 @@ public class MedicalRepositoryImpl implements MedicalDoctorRepository {
     public List<MedicalDoctor> findAll() {
 
         log.info("finding all doctors");
-        return this.manager.createQuery("select doctors from MedicalDoctor doctors").getResultList();
+        return this.manager.createQuery("select doctors from doctors").getResultList();
     }
 
     @Override
     public List<MedicalDoctor> findBySpecialtyName(String specialtyName) {
 
         log.info("finding doctors by specialty");
-        return this.manager.createQuery("select doctors from MedicalDoctor doctors where doctors.specialties =: specialtyName").getResultList();
+        return this.manager.createQuery("select doctors from doctors doctors where doctors.specialties =: specialtyName").getResultList();
     }
 
     @Override
     public MedicalDoctor findByLicenseNumber(int license) {
 
         log.info("find doctor by license number");
-        return (MedicalDoctor) this.manager.createQuery("select doctors from MedicalDoctor doctors where doctors.medicalLicenseNumber =: license").getSingleResult();
+        return (MedicalDoctor) this.manager.createQuery("select doctors from doctors doctors where doctors.medicalLicenseNumber =: license").getSingleResult();
     }
 
     @Override

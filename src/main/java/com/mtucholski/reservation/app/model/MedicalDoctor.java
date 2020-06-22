@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-@Entity
+@Entity(name = "doctors")
 @Table(name = "doctors", uniqueConstraints = @UniqueConstraint(columnNames = {"medical_license_number"}))
 @Data
 @NoArgsConstructor

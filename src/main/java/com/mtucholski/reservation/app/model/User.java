@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-@Entity
+@Entity(name = "users")
 @Table(name = "users")
 @Data
 @NoArgsConstructor

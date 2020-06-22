@@ -24,7 +24,7 @@ public class PatientRepositoryImpl implements PatientRepository {
     public List<Patient> findAll() throws DataAccessException {
 
         log.info("searching for all patients");
-        Query query = this.entityManager.createQuery("SELECT patient FROM Patient patient");
+        Query query = this.entityManager.createQuery("SELECT patient FROM patients patient");
         log.info("found patients");
         return query.getResultList();
     }
@@ -34,7 +34,7 @@ public class PatientRepositoryImpl implements PatientRepository {
 
         log.info("searching for patient with last_name:" + "" + lastName);
         Query query = this.entityManager.createQuery(
-                "SELECT patient from Patient patient left join fetch patient.address where patient.lastName LIKE :lastName");
+                "SELECT patient from patients patient left join fetch patient.address where patient.lastName LIKE :lastName");
 
         query.setParameter("lastName", lastName + "%");
         log.info("found patient with last name:" + "" + lastName);
@@ -44,7 +44,7 @@ public class PatientRepositoryImpl implements PatientRepository {
     @Override
     public Patient findByPersonalId(String personalId) throws DataAccessException {
 
-        Query query = this.entityManager.createQuery("select patient from Patient patient where patient.personalID = :personalId");
+        Query query = this.entityManager.createQuery("select patient from patients patient where patient.personalID = :personalId");
         query.setParameter("personalId", personalId);
         return (Patient) query.getSingleResult();
     }
@@ -52,7 +52,7 @@ public class PatientRepositoryImpl implements PatientRepository {
     @Override
     public Patient findById(int id) throws DataAccessException {
 
-        Query query = this.entityManager.createQuery("select patient from Patient patient where patient.id = :id");
+        Query query = this.entityManager.createQuery("select patient from patients patient where patient.id = :id");
         query.setParameter("id", id);
         return (Patient) query.getSingleResult();
     }
@@ -72,7 +72,7 @@ public class PatientRepositoryImpl implements PatientRepository {
     @Override
     public void deleteByPersonalID(String personalID) {
 
-        Query query = this.entityManager.createQuery("select patient from Patient  patient where patient.personalID =:personalID");
+        Query query = this.entityManager.createQuery("select patient from patients  patient where patient.personalID =:personalID");
         Patient patient = (Patient) query.getSingleResult();
 
         if (patient.getPersonalID().equals(personalID)) {

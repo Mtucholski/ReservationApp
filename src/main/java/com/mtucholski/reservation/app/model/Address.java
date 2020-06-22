@@ -14,8 +14,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-@Entity
-@Table
+@Entity(name = "address")
+@Table(name = "address")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
