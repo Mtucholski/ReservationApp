@@ -34,11 +34,8 @@ public class Patient extends Person {
     @JoinTable(name="visit", joinColumns = @JoinColumn(name = "visit_id"))
     private Set<Visit> visits;
 
-    @OneToOne(optional = false, targetEntity = Address.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Address address;
+    @OneToOne(optional = false, targetEntity = PatientAddress.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private PatientAddress patientAddress;
 
-
-    @OneToOne(optional = false, fetch = FetchType.EAGER, targetEntity = Address.class, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "patient")
-    private Address patientAddress;
 
 }

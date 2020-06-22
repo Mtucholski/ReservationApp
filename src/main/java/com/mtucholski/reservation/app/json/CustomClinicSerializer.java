@@ -26,8 +26,9 @@ public class CustomClinicSerializer extends StdSerializer<Clinic> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("clinic_id", clinic.getId());
         jsonGenerator.writeStringField("clinic_name", clinic.getClinicName());
-        jsonGenerator.writeObjectField("address", clinic.getClinicAddress());
         jsonGenerator.writeArrayFieldStart("doctors");
+        jsonGenerator.writeObjectField("clinic_address", clinic.getClinicAddress());
+
         for (MedicalDoctor doctor : clinic.getDoctors()){
 
             jsonGenerator.writeStartObject();

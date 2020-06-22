@@ -2,7 +2,6 @@ package com.mtucholski.reservation.app.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -15,7 +14,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class MedicalDoctor extends Person{
 
     @Column(name = "medical_license_number", unique = true)

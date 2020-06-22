@@ -35,7 +35,7 @@ public class CustomPatientSerializer extends StdSerializer<Patient> {
         jsonGenerator.writeStringField("first_name", patient.getFirstName());
         jsonGenerator.writeStringField("last_name", patient.getLastName());
         jsonGenerator.writeStringField("personal_id", patient.getPersonalID());
-        jsonGenerator.writeObject(patient.getAddress());
+        jsonGenerator.writeObject(patient.getPatientAddress());
         jsonGenerator.writeStringField("telephone", patient.getTelephone());
         jsonGenerator.writeStringField("email", patient.getEmail());
 

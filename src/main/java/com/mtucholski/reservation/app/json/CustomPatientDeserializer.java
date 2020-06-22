@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.mtucholski.reservation.app.model.Address;
+import com.mtucholski.reservation.app.model.PatientAddress;
 import com.mtucholski.reservation.app.model.Patient;
 import com.mtucholski.reservation.app.model.Visit;
 
@@ -25,12 +25,12 @@ public class CustomPatientDeserializer extends StdDeserializer<Patient> {
 
         Patient patient = new Patient();
         Visit visit;
-        Address address;
+        PatientAddress patientAddress;
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
         JsonNode visitNode = jsonNode.get("visit");
-        JsonNode addresses = jsonNode.get("address");
-        address = mapper.treeToValue(addresses, Address.class);
+        JsonNode addresses = jsonNode.get("patientAddress");
+        patientAddress = mapper.treeToValue(addresses, PatientAddress.class);
         visit = mapper.treeToValue(visitNode, Visit.class);
 
         int patientId = jsonNode.get("patient_id").asInt();
@@ -50,7 +50,7 @@ public class CustomPatientDeserializer extends StdDeserializer<Patient> {
         patient.setPersonalID(personalId);
         patient.setTelephone(telephone);
         patient.setEmail(email);
-        patient.setAddress(address);
+        patient.setPatientAddress(patientAddress);
         patient.setVisits(Collections.singleton(visit));
 
         return patient;

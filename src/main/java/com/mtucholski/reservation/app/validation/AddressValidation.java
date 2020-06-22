@@ -1,6 +1,6 @@
 package com.mtucholski.reservation.app.validation;
 
-import com.mtucholski.reservation.app.model.Address;
+import com.mtucholski.reservation.app.model.PatientAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,30 +14,29 @@ public class AddressValidation implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return Address.class.equals(aClass);
+        return PatientAddress.class.equals(aClass);
     }
 
     @Override
     public void validate(Object object, Errors errors) {
 
         String cityRegex = "^[\\p{L} .'-]+$";
-        Address address = (Address) object;
+        PatientAddress patientAddress = (PatientAddress) object;
 
-        log.info("checking if address fields are empty");
-        if (address.getCity().isEmpty() || address.getStreet().isEmpty() || address.getFlatNumber().isEmpty() ||
-                address.getStreetNumber().isEmpty() ){
+        log.info("checking if patientAddress fields are empty");
+        if (patientAddress.getCity().isEmpty() || patientAddress.getStreet().isEmpty() || patientAddress.getFlatNumber().isEmpty()){
 
-            errors.reject("[Address] cannot be null");
-            log.error("encountered errors during address validation:" + "" + errors);
+            errors.reject("[PatientAddress] cannot be null");
+            log.error("encountered errors during patientAddress validation:" + "" + errors);
 
         }
 
-        log.info("address fields aren't empty");
-        log.info("checking if address fields match pattern");
-        if (!(address.getCity()).matches(cityRegex) && !(address.getStreet().matches(cityRegex))){
+        log.info("patientAddress fields aren't empty");
+        log.info("checking if patientAddress fields match pattern");
+        if (!(patientAddress.getCity()).matches(cityRegex) && !(patientAddress.getStreet().matches(cityRegex))){
 
-            errors.reject("address city and street must match pattern");
-            log.error("address city and street doesn't match pattern:" + "" + cityRegex);
+            errors.reject("patientAddress city and street must match pattern");
+            log.error("patientAddress city and street doesn't match pattern:" + "" + cityRegex);
         }
     }
 }

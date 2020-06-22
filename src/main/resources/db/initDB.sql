@@ -1,4 +1,4 @@
-create table if not exists address
+create table if not exists patientAddress
 (
     address_id    serial      not null
         constraint pk_address
@@ -53,7 +53,7 @@ create table if not exists patients
         constraint patients_pk
             primary key
         constraint patients_address_address_id_fk
-            references address
+            references patientAddress
             on update cascade on delete cascade
         constraint patients_doctors_doctor_id_fk
             references doctors
@@ -79,7 +79,7 @@ create table if not exists clinic
         constraint clinic_pk
             primary key
         constraint clinic_address_address_id_fk
-            references address
+            references patientAddress
             on update cascade on delete cascade
         constraint clinic_doctors_doctor_id_fk
             references doctors
