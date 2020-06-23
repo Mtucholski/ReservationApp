@@ -3,7 +3,6 @@ package com.mtucholski.reservation.app.service;
 import com.mtucholski.reservation.app.exceptions.ClinicException;
 import com.mtucholski.reservation.app.model.*;
 import org.springframework.stereotype.Component;
-import sun.security.krb5.internal.PAData;
 
 import java.time.LocalDate;
 import java.util.List;
