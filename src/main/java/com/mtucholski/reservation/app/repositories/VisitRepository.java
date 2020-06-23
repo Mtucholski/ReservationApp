@@ -1,5 +1,6 @@
 package com.mtucholski.reservation.app.repositories;
 
+import com.mtucholski.reservation.app.exceptions.ClinicException;
 import com.mtucholski.reservation.app.model.Visit;
 import org.springframework.dao.DataAccessException;
 
@@ -13,5 +14,6 @@ public interface VisitRepository {
     List<Visit> findByDate(LocalDate date) throws DataAccessException;
     List<Visit> findAll() throws DataAccessException;
     Visit findById(int id)throws DataAccessException;
+    void update(Visit visit) throws DataAccessException, ClinicException;
 
 }

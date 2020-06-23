@@ -41,6 +41,10 @@ public class Visit extends BaseEntity{
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String visitDescription;
 
+    @Column
+    @NotEmpty
+    private int patientPersonalID;
+
     @ManyToOne(targetEntity = Patient.class, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "patient_id", name = "visit_id")
     private Patient patient;

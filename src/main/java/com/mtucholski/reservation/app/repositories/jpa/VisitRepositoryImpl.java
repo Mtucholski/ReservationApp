@@ -1,15 +1,16 @@
 package com.mtucholski.reservation.app.repositories.jpa;
 
+import com.mtucholski.reservation.app.exceptions.ClinicException;
 import com.mtucholski.reservation.app.model.Visit;
 import com.mtucholski.reservation.app.repositories.VisitRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -66,5 +67,23 @@ private EntityManager manager;
 
         log.info("finding visit by id");
         return this.manager.find(Visit.class, id);
+    }
+
+    @Override
+    public void update(Visit visit) throws DataAccessException, ClinicException {
+
+        Visit oldVisit = (Visit) this.manager.createQuery("select visit from Visit visit where visit.id =:id").getSingleResult();
+
+        if (oldVisit !=null){
+
+            oldVisit.setVisitDescription(visit.getVisitDescription());
+            oldVisit.setPatient(visit.getPatient());
+            oldVisit.setPatientPersonalID(visit.getPatientPersonalID());
+            oldVisit.setVisitDate(visit.getVisitDate());
+            this.manager.flush();
+        }else {
+
+            throw new ClinicException();
+        }
     }
 }

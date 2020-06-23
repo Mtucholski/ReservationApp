@@ -1,5 +1,6 @@
 package com.mtucholski.reservation.app.repositories.jpa;
 
+import com.mtucholski.reservation.app.exceptions.ClinicException;
 import com.mtucholski.reservation.app.model.Specialty;
 import com.mtucholski.reservation.app.repositories.SpecialtyRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,12 @@ public class SpecialtyRepositoryImpl implements SpecialtyRepository {
 
         log.info("downloading all specialties");
         return this.manager.createQuery("select specialty from specialties specialty").getResultList();
+    }
+
+    @Override
+    public Specialty findByName(String name) throws ClinicException {
+
+        return (Specialty) this.manager.createQuery("select specialty from specialties specialty where specialty.specialtyName =: name").getSingleResult();
     }
 
     @Override

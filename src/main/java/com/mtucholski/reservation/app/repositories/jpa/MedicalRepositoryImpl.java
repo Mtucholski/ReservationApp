@@ -1,5 +1,6 @@
 package com.mtucholski.reservation.app.repositories.jpa;
 
+import com.mtucholski.reservation.app.exceptions.ClinicException;
 import com.mtucholski.reservation.app.model.MedicalDoctor;
 import com.mtucholski.reservation.app.repositories.MedicalDoctorRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -67,5 +68,25 @@ public class MedicalRepositoryImpl implements MedicalDoctorRepository {
 
         log.info("removing doctor with id:" + "" + doctor.getId());
         this.manager.remove(doctor);
+    }
+
+    @Override
+    public void update(MedicalDoctor doctor) throws ClinicException {
+
+        MedicalDoctor oldDoctor = (MedicalDoctor) this.manager.createQuery("select doctor from doctors doctor where doctor.id = :id").getSingleResult();
+
+        if (oldDoctor !=null){
+
+            oldDoctor.setMedicalLicenseNumber(doctor.getMedicalLicenseNumber());
+            oldDoctor.setSpecialties(doctor.getSpecialties());
+            oldDoctor.setFirstName(doctor.getFirstName());
+            oldDoctor.setLastName(doctor.getLastName());
+            oldDoctor.setPersonalID(doctor.getPersonalID());
+            oldDoctor.setTelephone(doctor.getTelephone());
+            this.manager.flush();
+        }else {
+
+            throw new ClinicException();
+        }
     }
 }

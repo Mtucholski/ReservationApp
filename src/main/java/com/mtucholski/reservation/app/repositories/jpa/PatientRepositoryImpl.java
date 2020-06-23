@@ -34,7 +34,7 @@ public class PatientRepositoryImpl implements PatientRepository {
 
         log.info("searching for patient with last_name:" + "" + lastName);
         Query query = this.entityManager.createQuery(
-                "SELECT patient from patients patient left join fetch patient.address where patient.lastName LIKE :lastName");
+                "SELECT patient from patients patient left join fetch patient_address where patient.lastName LIKE :lastName");
 
         query.setParameter("lastName", lastName + "%");
         log.info("found patient with last name:" + "" + lastName);
