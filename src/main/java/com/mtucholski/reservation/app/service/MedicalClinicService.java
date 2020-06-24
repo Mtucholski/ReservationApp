@@ -6,7 +6,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
-@Component
+
+/**
+ * used as a facade so all controllers have a single point of entry
+ */
 public interface MedicalClinicService {
 
     Patient findPatientById(int id) throws ClinicException;

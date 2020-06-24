@@ -8,5 +8,4 @@ public class Roles {
     public final String PATIENT = "ROLE_PATIENT";
     public final String DOCTOR = "ROLE_DOCTOR";
     public final String OWNER = "ROLE_OWNER";
-    public final String REPORT = "ROLE_REPORTER";
 }
