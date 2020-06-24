@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -24,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
    private CustomAccessDeniedHandler customAccessDeniedHandler;
    private RESTAuthenticationEntryPoint entryPoint;
    private RequestAwareAuthenticationSuccessHandler handler;
+   private DataSource dataSource;
 
    private final SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 
@@ -37,10 +40,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public SecurityConfiguration(CustomAccessDeniedHandler customAccessDeniedHandler,
                                  RESTAuthenticationEntryPoint entryPoint,
-                                 RequestAwareAuthenticationSuccessHandler handler) {
+                                 RequestAwareAuthenticationSuccessHandler handler, DataSource dataSource) {
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.entryPoint = entryPoint;
         this.handler = handler;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -74,6 +78,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .logout();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        // @formatter:off
+        auth
+                .jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select username,password,enabled from users where username=?")
+                .authoritiesByUsernameQuery("select username,role from roles where username=?");
+        // @formatter:on
     }
 
     @Bean
