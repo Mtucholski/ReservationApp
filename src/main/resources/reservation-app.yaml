@@ -1,0 +1,643 @@
+swagger: '2.0'
+info:
+  description: This is rest api for clinic reservation
+  version: '1.0'
+  title: REST clinic backend Api docs
+  termsOfService: clinic terms
+  contact:
+    name: Mateusz Tucholski
+    url: 'https://github.com'
+    email: mateusz.tucholski@atos.net
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: 'localhost:9966'
+basePath: /reservation-app
+paths:
+  /api/vets:
+    get:
+      tags:
+        - medical-doctor-rest-controller
+      summary: getAllDoctors
+      operationId: getAllDoctorsUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MedicalDoctor'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/vets/addVet:
+    post:
+      tags:
+        - medical-doctor-rest-controller
+      summary: addDoctor
+      operationId: addDoctorUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: doctor
+          description: doctor
+          required: true
+          schema:
+            $ref: '#/definitions/MedicalDoctor'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MedicalDoctor'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/vets/delete/{id}':
+    delete:
+      tags:
+        - medical-doctor-rest-controller
+      summary: deleteDoctor
+      operationId: deleteDoctorUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  /api/vets/update:
+    put:
+      tags:
+        - medical-doctor-rest-controller
+      summary: updateDoctor
+      operationId: updateDoctorUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: newDoctor
+          description: newDoctor
+          required: true
+          schema:
+            $ref: '#/definitions/MedicalDoctor'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MedicalDoctor'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/vets/{doctorId}':
+    get:
+      tags:
+        - medical-doctor-rest-controller
+      summary: findDoctorById
+      operationId: findDoctorByIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: doctorId
+          in: path
+          description: doctorId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MedicalDoctor'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/vets/{licenseNumber}':
+    get:
+      tags:
+        - medical-doctor-rest-controller
+      summary: getDoctorNyLicenseNumber
+      operationId: getDoctorNyLicenseNumberUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: licenseNumber
+          in: path
+          description: licenseNumber
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MedicalDoctor'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/vets/find-vet/{specialtyName}':
+    get:
+      tags:
+        - medical-doctor-rest-controller
+      summary: getDoctorsWithSpecialty
+      operationId: getDoctorsWithSpecialtyUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: specialtyName
+          in: path
+          description: specialtyName
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MedicalDoctor'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/visits:
+    get:
+      tags:
+        - visit-rest-controller
+      summary: getAllVisits
+      operationId: getAllVisitsUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Visit'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - visit-rest-controller
+      summary: addVisit
+      operationId: addVisitUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: visit
+          description: visit
+          required: true
+          schema:
+            $ref: '#/definitions/Visit'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Visit'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/visits/{visitId}':
+    get:
+      tags:
+        - visit-rest-controller
+      summary: getVisit
+      operationId: getVisitUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: visitId
+          in: path
+          description: visitId
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Visit'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - visit-rest-controller
+      summary: deleteVisit
+      operationId: deleteVisitUsingDELETE
+      produces:
+        - application/json
+      parameters:
+        - name: visitId
+          in: path
+          description: visitId
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  /error:
+    get:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingGET
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    head:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingHEAD
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+    post:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingDELETE
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+    options:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingOPTIONS
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+    patch:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+definitions:
+  MedicalDoctor:
+    type: object
+    properties:
+      firstName:
+        type: string
+      id:
+        type: integer
+        format: int32
+      lastName:
+        type: string
+      medicalLicenseNumber:
+        type: integer
+        format: int32
+      personalID:
+        type: string
+      specialties:
+        type: array
+        items:
+          $ref: '#/definitions/Specialty'
+      telephone:
+        type: string
+    title: MedicalDoctor
+  ModelAndView:
+    type: object
+    properties:
+      empty:
+        type: boolean
+      model:
+        type: object
+      modelMap:
+        type: object
+        additionalProperties:
+          type: object
+      reference:
+        type: boolean
+      status:
+        type: string
+        enum:
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 425 TOO_EARLY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
+      view:
+        $ref: '#/definitions/View'
+      viewName:
+        type: string
+    title: ModelAndView
+  Patient:
+    type: object
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: integer
+        format: int32
+      lastName:
+        type: string
+      patientAddress:
+        $ref: '#/definitions/PatientAddress'
+      patient_id:
+        type: integer
+        format: int32
+      personalID:
+        type: string
+      telephone:
+        type: string
+      visits:
+        type: array
+        items:
+          $ref: '#/definitions/Visit'
+    title: Patient
+  PatientAddress:
+    type: object
+    properties:
+      city:
+        type: string
+      flatNumber:
+        type: string
+      id:
+        type: integer
+        format: int32
+      patient:
+        $ref: '#/definitions/Patient'
+      street:
+        type: string
+    title: PatientAddress
+  Specialty:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      medicalDoctors:
+        $ref: '#/definitions/MedicalDoctor'
+      specialtyName:
+        type: string
+    title: Specialty
+  View:
+    type: object
+    properties:
+      contentType:
+        type: string
+    title: View
+  Visit:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      patient:
+        $ref: '#/definitions/Patient'
+      patientPersonalID:
+        type: integer
+        format: int32
+      visitDate:
+        type: string
+        example: dd/MM/yyyy
+      visitDescription:
+        type: string
+    title: Visit

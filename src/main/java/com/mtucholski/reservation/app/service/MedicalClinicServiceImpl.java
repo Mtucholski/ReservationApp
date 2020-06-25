@@ -25,6 +25,7 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
     private final VisitRepository visitRepository;
 
 
+
     @Autowired
     public MedicalClinicServiceImpl(ClinicRepository clinicRepository, MedicalDoctorRepository medicalDoctorRepository,
                                     PatientRepository patientRepository, SpecialtyRepository specialtyRepository,

@@ -1,14 +1,3 @@
-create table if not exists patientAddress
-(
-    address_id    serial      not null
-        constraint pk_address
-            primary key,
-    city          varchar(25) not null,
-    street        varchar(30) not null,
-    street_number numeric(4)  not null,
-    flat_number   numeric(3)
-);
-
 create table if not exists specialties
 (
     specialty_id serial not null
@@ -24,10 +13,7 @@ create table if not exists doctors
 (
     doctor_id serial not null
         constraint doctors_pk
-            primary key
-        constraint doctors_specialties_specialty_id_fk
-            references specialties
-            on update cascade on delete cascade,
+            primary key,
     first_name varchar(25) not null,
     "last_name " varchar(30) not null,
     personal_id varchar not null,
@@ -36,7 +22,6 @@ create table if not exists doctors
     telephone varchar not null
 );
 
-alter table doctors owner to postgres;
 
 create unique index if not exists doctors_doctor_id_uindex
     on doctors (doctor_id);
@@ -51,13 +36,7 @@ create table if not exists patients
 (
     patient_id serial not null
         constraint patients_pk
-            primary key
-        constraint patients_address_address_id_fk
-            references patientAddress
-            on update cascade on delete cascade
-        constraint patients_doctors_doctor_id_fk
-            references doctors
-            on update cascade on delete cascade,
+            primary key,
     first_name varchar(25) not null,
     last_name varchar(30) not null,
     personal_id varchar(11) not null,
@@ -66,54 +45,21 @@ create table if not exists patients
     clinic_name varchar not null
 );
 
-
-
-alter table doctors
-    add constraint doctors_patients_patient_id_fk
-        foreign key (doctor_id) references patients
-            on update cascade;
-
-create table if not exists clinic
-(
-    clinic_id serial not null
-        constraint clinic_pk
-            primary key
-        constraint clinic_address_address_id_fk
-            references patientAddress
-            on update cascade on delete cascade
-        constraint clinic_doctors_doctor_id_fk
-            references doctors
-            on update cascade on delete cascade
-        constraint clinic_patients_patient_id_fk
-            references patients
-            on update cascade on delete cascade,
-    clinic_name varchar(2000) not null
-);
-
-alter table doctors
-    add constraint doctors_clinic_clinic_id_fk
-        foreign key (doctor_id) references clinic;
-
-create unique index if not exists clinic_clinic_id_uindex
-    on clinic (clinic_id);
-
 create unique index if not exists patients_patient_id_uindex
     on patients (patient_id);
 
-create table if not exists visits
+create table if not exists "Visit"
 (
     visit_id serial not null
         constraint visits_pk
-            primary key
-        constraint visits_patients_patient_id_fk
-            references patients
-            on update cascade,
+            primary key,
     visit_date date not null,
-    visit_description varchar(3000) not null
+    visit_description varchar(3000) not null,
+    patient_personal_id integer not null
 );
 
 create unique index if not exists visits_visit_id_uindex
-    on visits (visit_id);
+    on "Visit" (visit_id);
 
 create table if not exists users
 (
@@ -137,13 +83,40 @@ create table if not exists roles
     role_id serial not null
         constraint roles_pk
             primary key,
-    username varchar(20) not null
-        constraint roles_users_username_fk
-            references users (username)
-            on update cascade on delete cascade,
+    username varchar(20) not null,
     role varchar not null
 );
 
 create unique index if not exists roles_role_id_uindex
     on roles (role_id);
+
+create table if not exists patient_address
+(
+    patient_address_id serial not null,
+    street varchar not null,
+    flat_number varchar,
+    city varchar not null
+);
+
+create unique index if not exists patient_address_patient_address_id_uindex
+    on patient_address (patient_address_id);
+
+create table if not exists clinic_address
+(
+    clinic_address_id serial not null,
+    street varchar,
+    zip_code varchar
+);
+create table if not exists clinic
+(
+    clinic_id serial not null
+        constraint clinic_pk
+            primary key,
+    clinic_name varchar(2000) not null
+);
+
+create unique index if not exists clinic_clinic_id_uindex
+    on clinic (clinic_id);
+create unique index if not exists clinic_address_clinic_address_id_uindex
+    on clinic_address (clinic_address_id);
 

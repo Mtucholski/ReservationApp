@@ -22,14 +22,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonSerialize(using = CustomVisitSerializer.class)
-public class Visit extends BaseEntity{
+public class Visit extends BaseEntity {
 
     /**
      * holds value for visit date
      * pattern: dd/MM/yyyy
      */
-    @Column(name = "visit_date",nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "visit_date", nullable = false)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @NotEmpty
@@ -46,7 +45,10 @@ public class Visit extends BaseEntity{
     private int patientPersonalID;
 
     @ManyToOne(targetEntity = Patient.class, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "patient_id", name = "visit_id")
+    @JoinColumns({
+            @JoinColumn(name = "patient_id", insertable = false, updatable = false),
+            @JoinColumn(name = "visit_id", insertable = false, updatable = false)
+    })
     private Patient patient;
 
 }

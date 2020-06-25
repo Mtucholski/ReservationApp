@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "patients")
@@ -22,16 +23,19 @@ import java.util.Set;
 @AllArgsConstructor
 @JsonSerialize(using = CustomPatientSerializer.class)
 @JsonDeserialize(using = CustomPatientDeserializer.class)
-public class Patient extends Person {
+public class Patient extends Person implements Serializable {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer patient_id;
 
     @Column(name = "email", nullable = false, unique = true)
     @NotEmpty
     @Email
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY,targetEntity = Visit.class, cascade = CascadeType.ALL)
-    @JoinTable(name="visit", joinColumns = @JoinColumn(name = "visit_id"))
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Visit.class, cascade = CascadeType.ALL)
     private Set<Visit> visits;
 
     @OneToOne(optional = false, targetEntity = PatientAddress.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

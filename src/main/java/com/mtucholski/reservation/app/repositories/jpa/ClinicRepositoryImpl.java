@@ -2,6 +2,7 @@ package com.mtucholski.reservation.app.repositories.jpa;
 
 import com.mtucholski.reservation.app.model.Clinic;
 import com.mtucholski.reservation.app.repositories.ClinicRepository;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Repository
 @Profile("jpa")
 @Slf4j
+@NoArgsConstructor
 public class ClinicRepositoryImpl implements ClinicRepository {
 
     @PersistenceContext

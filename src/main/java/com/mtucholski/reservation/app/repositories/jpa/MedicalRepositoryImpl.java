@@ -3,6 +3,7 @@ package com.mtucholski.reservation.app.repositories.jpa;
 import com.mtucholski.reservation.app.exceptions.ClinicException;
 import com.mtucholski.reservation.app.model.MedicalDoctor;
 import com.mtucholski.reservation.app.repositories.MedicalDoctorRepository;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Repository
 @Slf4j
+@NoArgsConstructor
 @Profile("jpa")
 public class MedicalRepositoryImpl implements MedicalDoctorRepository {
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -13,7 +14,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
+@Component
+
 public class BindingErrorsResponse {
+
+    public BindingErrorsResponse() {
+        this(null);
+    }
 
     public BindingErrorsResponse(Integer id) {
         this(null, id);
