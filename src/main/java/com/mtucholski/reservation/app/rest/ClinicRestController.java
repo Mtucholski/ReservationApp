@@ -87,5 +87,11 @@ public class ClinicRestController {
         return new ResponseEntity<>(clinic, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteClinic(@RequestBody @Valid Clinic clinic){
+
+        clinicService.deleteClinic(clinic);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
