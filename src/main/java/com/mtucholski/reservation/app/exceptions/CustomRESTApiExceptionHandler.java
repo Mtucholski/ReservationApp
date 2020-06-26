@@ -191,24 +191,5 @@ public class CustomRESTApiExceptionHandler extends ResponseEntityExceptionHandle
         final ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
-
-    @ExceptionHandler({ClinicException.class})
-    public ResponseEntity<Object> handleClinicException(final ClinicException ex, final WebRequest request) {
-
-        logger.info(ex.getClass().getName());
-        logger.error("error", ex);
-        logger.fatal(request);
-
-        final ApiError apiError = new ApiError(HttpStatus.BAD_GATEWAY, ex.getLocalizedMessage(), "error occurred");
-        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
-    }
-
-    @ExceptionHandler({ AccessDeniedException.class })
-    public ResponseEntity<Object> handleAccessDeniedException(
-            Exception ex, WebRequest request) {
-
-        log.error("access denied"+ " " + ex.getCause() + "" + request);
-        return new ResponseEntity<>("Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
-    }
 }
 
