@@ -16,7 +16,6 @@ public interface MedicalClinicService {
     List<Patient> findByLastName(String lastName) throws ClinicException;
     void savePatient(Patient patient) throws ClinicException;
     void deletePatient(Patient patient) throws ClinicException;
-    void createNewVisit(Visit visit) throws ClinicException;
     void updatePatient(Patient patient) throws ClinicException;
 
     Visit findVisitsById(int id) throws ClinicException;

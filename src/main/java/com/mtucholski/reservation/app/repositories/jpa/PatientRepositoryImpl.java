@@ -97,7 +97,7 @@ public class PatientRepositoryImpl implements PatientRepository {
             oldPatient.setLastName(patient.getLastName());
             oldPatient.setEmail(patient.getEmail());
             oldPatient.setTelephone(patient.getTelephone());
-            this.entityManager.flush();
+           this.entityManager.flush();
 
         }
     }

@@ -120,19 +120,6 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE, timeout = 1000, rollbackFor = RuntimeException.class)
-    public void createNewVisit(Visit visit) throws ClinicException {
-
-        if (visit == null){
-
-            log.error("visit is null");
-            throw new ClinicException(ClinicException.ExceptionType.BAD_ENTRY_DATA);
-        }
-
-        visitRepository.save(visit);
-    }
-
-    @Override
     @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = Error.class, rollbackFor = RuntimeException.class, timeout = 10000)
     public void updatePatient(Patient patient) throws ClinicException {
 

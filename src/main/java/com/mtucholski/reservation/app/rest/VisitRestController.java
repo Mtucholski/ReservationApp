@@ -80,7 +80,6 @@ public class VisitRestController {
 
     @PreAuthorize("hasRole(@roles.OWNER)")
     @RequestMapping(value = "/{visitId}", method = RequestMethod.DELETE, produces = "application/json")
-    @Transactional
     public ResponseEntity<Void> deleteVisit(@PathVariable("visitId") int visitId) {
 
         Visit visit = this.clinicService.findVisitsById(visitId);

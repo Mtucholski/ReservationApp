@@ -1,6 +1,5 @@
 package com.mtucholski.reservation.app.security;
 
-import com.mtucholski.reservation.app.exceptions.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -29,6 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
    private DataSource dataSource;
 
    private final SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+
 
     public SecurityConfiguration(){
 
@@ -57,27 +60,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
                 .authorizeRequests()
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler(customAccessDeniedHandler)
-                .authenticationEntryPoint(entryPoint)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/csrfAttacker*").permitAll()
-                .antMatchers("/api/customer/**").permitAll()
-                .antMatchers("/api/**").authenticated()
-                .antMatchers("/api/async/**").permitAll()
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/anonymous*").anonymous()
+                .antMatchers("/login*").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .successHandler(handler)
-                .failureHandler(failureHandler)
+                .loginPage("/login.html")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/homepage.html", true)
+                //.failureUrl("/login.html?error=true")
+                .failureHandler(authenticationFailureHandler())
                 .and()
-                .httpBasic()
-                .and()
-                .logout();
+                .logout()
+                .logoutUrl("/perform_logout")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(logoutSuccessHandler());
     }
 
     @Autowired
@@ -96,4 +96,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+
+        return new CustomLogoutSuccessHandler();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+
+        return new CustoAuthenticationFailureHandler();
+    }
 }

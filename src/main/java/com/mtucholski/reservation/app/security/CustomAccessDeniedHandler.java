@@ -1,4 +1,4 @@
-package com.mtucholski.reservation.app.exceptions;
+package com.mtucholski.reservation.app.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
