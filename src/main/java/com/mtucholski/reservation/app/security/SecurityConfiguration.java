@@ -1,6 +1,7 @@
 package com.mtucholski.reservation.app.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = "com.mtucholski.reservation.app.security")
+@ConditionalOnProperty(value = "reservation-app.security.enable", havingValue ="true")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
    private CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -50,17 +52,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.dataSource = dataSource;
     }
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(encoder().encode("adminPass")).roles("ADMIN")
-                .and()
-                .withUser("user").password(encoder().encode("userPass")).roles("USER");
-    }
+//    @Override
+//    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("admin").password(encoder().encode("adminPass")).roles("ADMIN")
+//                .and()
+//                .withUser("user").password(encoder().encode("userPass")).roles("USER");
+//    }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/anonymous*").anonymous()

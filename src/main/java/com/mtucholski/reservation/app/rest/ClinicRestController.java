@@ -37,22 +37,22 @@ public class ClinicRestController {
         return new ResponseEntity<>(clinics, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/clinic/clinics/{clinicName}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<Collection<Clinic>> findClinicInTheCity(@PathVariable("city") String cityName){
+    @RequestMapping(path = "/findName/{clinicName}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<Collection<Clinic>> findClinicInTheCity(@PathVariable("clinicName") String cityName){
 
         Collection<Clinic> clinics = new ArrayList<>(clinicService.findByCity(cityName));
 
         return new ResponseEntity<>(clinics, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/clinic/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{clinicId}", method = RequestMethod.GET)
     public ResponseEntity<Clinic> getClinicById(@PathVariable("clinicId") int clinicId){
 
         Clinic clinic = clinicService.findByClinicId(clinicId);
         return new ResponseEntity<>(clinic, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/addClinic", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(path = "/addClinic", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Clinic> addClinic(@RequestBody @Valid Clinic clinic, BindingResult result, UriComponentsBuilder builder){
 
         BindingErrorsResponse response = new BindingErrorsResponse();
@@ -66,11 +66,11 @@ public class ClinicRestController {
         }
 
         clinicService.createClinic(clinic);
-        headers.setLocation(builder.path("/clinic/newClinic/{id}").buildAndExpand(clinic.getId()).toUri());
+        headers.setLocation(builder.path("/clinic/newClinic/{clinicId}").buildAndExpand(clinic.getId()).toUri());
         return new ResponseEntity<>(clinic, headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path = "/updateClinic", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(path = "/updateClinic", method = RequestMethod.PUT,consumes = "application/json",produces = "application/json")
     public ResponseEntity<Clinic> updateClinic(@RequestBody @Valid Clinic clinic, BindingResult result){
 
         BindingErrorsResponse errorsResponse = new BindingErrorsResponse();
@@ -87,7 +87,7 @@ public class ClinicRestController {
         return new ResponseEntity<>(clinic, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
     public ResponseEntity<Void> deleteClinic(@RequestBody @Valid Clinic clinic){
 
         clinicService.deleteClinic(clinic);

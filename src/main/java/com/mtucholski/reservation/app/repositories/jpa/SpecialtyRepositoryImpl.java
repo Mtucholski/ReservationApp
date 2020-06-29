@@ -26,7 +26,7 @@ public class SpecialtyRepositoryImpl implements SpecialtyRepository {
     public Specialty findById(int id) throws DataAccessException {
 
         log.info("searching for specialty by id");
-        return (Specialty) this.manager.createQuery("select specialty from specialties specialty where specialty.id =: id").getSingleResult();
+        return this.manager.find(Specialty.class, id);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SpecialtyRepositoryImpl implements SpecialtyRepository {
     @Override
     public Specialty findByName(String name) throws ClinicException {
 
-        return (Specialty) this.manager.createQuery("select specialty from specialties specialty where specialty.specialtyName =: name").getSingleResult();
+        return this.manager.find(Specialty.class, name);
     }
 
     @Override
@@ -60,10 +60,14 @@ public class SpecialtyRepositoryImpl implements SpecialtyRepository {
     @Override
     public void deleteSpecialty(int id) throws DataAccessException {
 
-        log.info("searching for specialty by id");
-        Specialty specialty = (Specialty) this.manager.createQuery("select specialty from specialties specialty where specialty.id =: id").getSingleResult();
-        log.info("deleting specialty");
-        this.manager.remove(specialty);
-        log.info("specialty deleted");
+        Specialty specialty = this.manager.find(Specialty.class, id);
+
+        if (specialty !=null){
+
+            this.manager.remove(specialty);
+        }else {
+
+            throw new ClinicException(ClinicException.ExceptionType.NOT_FOUND);
+        }
     }
 }

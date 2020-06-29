@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,15 +32,26 @@ public class ClinicRepositoryImpl implements ClinicRepository {
     @Override
     public List<Clinic> findByCity(String city) {
 
+        List<Clinic> cityClinics = new ArrayList<>();
         log.info("finding clinics by city");
-        return this.manager.createQuery("select clinic from clinic clinic left join fetch clinic.clinicAddress where clinic.clinicAddress.city = :city").getResultList();
+        List<Clinic> clinics = this.manager.createQuery("select clinic from clinic").getResultList();
+
+        for (Clinic clinic : clinics){
+
+            if (clinic.getClinicAddress().getCity().equals(city)){
+
+                cityClinics.add(clinic);
+            }
+        }
+
+        return cityClinics;
     }
 
     @Override
     public Clinic findById(int id) {
 
         log.info("finding clinic by id");
-        return (Clinic) this.manager.createQuery("select clinic from clinic clinic left join fetch clinic.clinicAddress where clinic.id =:id").getSingleResult();
+        return this.manager.find(Clinic.class, id);
     }
 
     @Override
@@ -47,6 +59,7 @@ public class ClinicRepositoryImpl implements ClinicRepository {
 
         log.info("filtering clinics for specific clinic");
         List<Clinic> clinics = this.manager.createQuery("select clinic from clinic clinic").getResultList();
+
         Optional<Clinic> clinicOptional = clinics.stream().filter(cv -> cv.getId().equals(clinic.getId())).findFirst();
 
         if (clinicOptional.isPresent()){

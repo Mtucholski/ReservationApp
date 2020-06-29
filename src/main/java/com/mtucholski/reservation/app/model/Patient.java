@@ -1,9 +1,5 @@
 package com.mtucholski.reservation.app.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mtucholski.reservation.app.json.CustomPatientDeserializer;
-import com.mtucholski.reservation.app.json.CustomPatientSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,14 +17,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonSerialize(using = CustomPatientSerializer.class)
-@JsonDeserialize(using = CustomPatientDeserializer.class)
 public class Patient extends Person implements Serializable {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer patient_id;
 
     @Column(name = "email", nullable = false, unique = true)
     @NotEmpty

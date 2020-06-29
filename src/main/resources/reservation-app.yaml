@@ -13,8 +13,185 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0'
 host: 'localhost:9966'
 basePath: /reservation-app
+tags:
+  - name: basic-error-controller
+    description: Basic Error Controller
+  - name: clinic-rest-controller
+    description: Clinic Rest Controller
+  - name: medical-doctor-rest-controller
+    description: Medical Doctor Rest Controller
+  - name: patient-rest-controller
+    description: Patient Rest Controller
+  - name: specialty-rest-controller
+    description: Specialty Rest Controller
+  - name: visit-rest-controller
+    description: Visit Rest Controller
 paths:
-  /api/vets:
+  /api/clinic/addClinic:
+    post:
+      tags:
+        - clinic-rest-controller
+      summary: addClinic
+      operationId: addClinicUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: clinic
+          description: clinic
+          required: true
+          schema:
+            $ref: '#/definitions/Clinic'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Clinic'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/clinic/all-clinics:
+    get:
+      tags:
+        - clinic-rest-controller
+      summary: getAllClinics
+      operationId: getAllClinicsUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Clinic'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/clinic/delete:
+    delete:
+      tags:
+        - clinic-rest-controller
+      summary: deleteClinic
+      operationId: deleteClinicUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: clinic
+          description: clinic
+          required: true
+          schema:
+            $ref: '#/definitions/Clinic'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/api/clinic/findName/{clinicName}':
+    get:
+      tags:
+        - clinic-rest-controller
+      summary: findClinicInTheCity
+      operationId: findClinicInTheCityUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: clinicName
+          in: path
+          description: clinic name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Clinic'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/clinic/updateClinic:
+    put:
+      tags:
+        - clinic-rest-controller
+      summary: updateClinic
+      operationId: updateClinicUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: clinic
+          description: clinic
+          required: true
+          schema:
+            $ref: '#/definitions/Clinic'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Clinic'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/clinic/{clinicId}':
+    get:
+      tags:
+        - clinic-rest-controller
+      summary: getClinicById
+      operationId: getClinicByIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: clinicId
+          in: path
+          description: clinicId
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Clinic'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/doctors:
     get:
       tags:
         - medical-doctor-rest-controller
@@ -28,7 +205,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MedicalDoctor'
+              $ref: '#/definitions/Doctor'
         '401':
           description: Unauthorized
         '403':
@@ -36,7 +213,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /api/vets/addVet:
+  /api/doctors/addDoctor:
     post:
       tags:
         - medical-doctor-rest-controller
@@ -45,19 +222,19 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - in: body
           name: doctor
           description: doctor
           required: true
           schema:
-            $ref: '#/definitions/MedicalDoctor'
+            $ref: '#/definitions/Doctor'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/MedicalDoctor'
+            $ref: '#/definitions/Doctor'
         '201':
           description: Created
         '401':
@@ -67,7 +244,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/api/vets/delete/{id}':
+  '/api/doctors/deleteDoctor/{id}':
     delete:
       tags:
         - medical-doctor-rest-controller
@@ -92,64 +269,7 @@ paths:
         '403':
           description: Forbidden
       deprecated: false
-  /api/vets/update:
-    put:
-      tags:
-        - medical-doctor-rest-controller
-      summary: updateDoctor
-      operationId: updateDoctorUsingPUT
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: newDoctor
-          description: newDoctor
-          required: true
-          schema:
-            $ref: '#/definitions/MedicalDoctor'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/MedicalDoctor'
-        '201':
-          description: Created
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-  '/api/vets/{doctorId}':
-    get:
-      tags:
-        - medical-doctor-rest-controller
-      summary: findDoctorById
-      operationId: findDoctorByIdUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: doctorId
-          in: path
-          description: doctorId
-          required: true
-          type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/MedicalDoctor'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-  '/vets/{licenseNumber}':
+  '/api/doctors/findLicense/{licenseNumber}':
     get:
       tags:
         - medical-doctor-rest-controller
@@ -162,12 +282,13 @@ paths:
           in: path
           description: licenseNumber
           required: true
-          type: string
+          type: integer
+          format: int32
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/MedicalDoctor'
+            $ref: '#/definitions/Doctor'
         '401':
           description: Unauthorized
         '403':
@@ -175,7 +296,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/vets/find-vet/{specialtyName}':
+  '/api/doctors/findSpecialty/{specialtyName}':
     get:
       tags:
         - medical-doctor-rest-controller
@@ -195,7 +316,360 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MedicalDoctor'
+              $ref: '#/definitions/Doctor'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/doctors/updateDoctor:
+    put:
+      tags:
+        - medical-doctor-rest-controller
+      summary: updateDoctor
+      operationId: updateDoctorUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: newDoctor
+          description: newDoctor
+          required: true
+          schema:
+            $ref: '#/definitions/Doctor'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Doctor'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/doctors/{doctorId}':
+    get:
+      tags:
+        - medical-doctor-rest-controller
+      summary: findDoctorById
+      operationId: findDoctorByIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: doctorId
+          in: path
+          description: doctorId
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Doctor'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/patients/addPatient:
+    post:
+      tags:
+        - patient-rest-controller
+      summary: addNewPatient
+      operationId: addNewPatientUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: patient
+          description: patient
+          required: true
+          schema:
+            $ref: '#/definitions/Patient'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Patient'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/patients/deletePatient/{patientId}':
+    delete:
+      tags:
+        - patient-rest-controller
+      summary: deletePatient
+      operationId: deletePatientUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - name: patientId
+          in: path
+          description: patientId
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/api/patients/findPatient/{patientId}':
+    get:
+      tags:
+        - patient-rest-controller
+      summary: getPatientById
+      operationId: getPatientByIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: patientId
+          in: path
+          description: patientId
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Patient'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/patients/getAll:
+    get:
+      tags:
+        - patient-rest-controller
+      summary: getAllPatients
+      operationId: getAllPatientsUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Patient'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/patients/patientLastName/{lastName}':
+    get:
+      tags:
+        - patient-rest-controller
+      summary: getPatientsByLastName
+      operationId: getPatientsByLastNameUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: lastName
+          in: path
+          description: lastName
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Patient'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/patients/patientUpdate:
+    put:
+      tags:
+        - patient-rest-controller
+      summary: updatePatient
+      operationId: updatePatientUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: patient
+          description: patient
+          required: true
+          schema:
+            $ref: '#/definitions/Patient'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Patient'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/specialties/all-specialties:
+    get:
+      tags:
+        - specialty-rest-controller
+      summary: getAllSpecialties
+      operationId: getAllSpecialtiesUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Specialty'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/specialties/create-specialty:
+    post:
+      tags:
+        - specialty-rest-controller
+      summary: createSpecialty
+      operationId: createSpecialtyUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: specialty
+          description: specialty
+          required: true
+          schema:
+            $ref: '#/definitions/Specialty'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Specialty'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/specialties/delete:
+    delete:
+      tags:
+        - specialty-rest-controller
+      summary: deleteSpecialty
+      operationId: deleteSpecialtyUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: specialty
+          description: specialty
+          required: true
+          schema:
+            $ref: '#/definitions/Specialty'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/api/specialties/find/{specialtyId}':
+    get:
+      tags:
+        - specialty-rest-controller
+      summary: getById
+      operationId: getByIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: specialtyId
+          in: path
+          description: specialtyId
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Specialty'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/specialties/specialty-name/{specialtyName})':
+    get:
+      tags:
+        - specialty-rest-controller
+      summary: getSpecialtyByName
+      operationId: getSpecialtyByNameUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: specialtyName
+          in: path
+          description: specialtyName
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Specialty'
         '401':
           description: Unauthorized
         '403':
@@ -255,7 +729,63 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/visits/{visitId}':
+  /api/visits/deleteVisit:
+    delete:
+      tags:
+        - visit-rest-controller
+      summary: deleteVisit
+      operationId: deleteVisitUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: visit
+          description: visit
+          required: true
+          schema:
+            $ref: '#/definitions/Visit'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  /api/visits/updateVisit:
+    put:
+      tags:
+        - visit-rest-controller
+      summary: updateVisit
+      operationId: updateVisitUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: visit
+          description: visit
+          required: true
+          schema:
+            $ref: '#/definitions/Visit'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Visit'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/visits/{visitId}':
     get:
       tags:
         - visit-rest-controller
@@ -282,43 +812,21 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-    delete:
-      tags:
-        - visit-rest-controller
-      summary: deleteVisit
-      operationId: deleteVisitUsingDELETE
-      produces:
-        - application/json
-      parameters:
-        - name: visitId
-          in: path
-          description: visitId
-          required: true
-          type: integer
-          format: int32
-      responses:
-        '200':
-          description: OK
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-      deprecated: false
   /error:
     get:
       tags:
         - basic-error-controller
-      summary: errorHtml
-      operationId: errorHtmlUsingGET
+      summary: error
+      operationId: errorUsingGET
       produces:
-        - text/html
+        - '*/*'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/ModelAndView'
+            type: object
+            additionalProperties:
+              type: object
         '401':
           description: Unauthorized
         '403':
@@ -329,17 +837,19 @@ paths:
     head:
       tags:
         - basic-error-controller
-      summary: errorHtml
-      operationId: errorHtmlUsingHEAD
+      summary: error
+      operationId: errorUsingHEAD
       consumes:
         - application/json
       produces:
-        - text/html
+        - '*/*'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/ModelAndView'
+            type: object
+            additionalProperties:
+              type: object
         '204':
           description: No Content
         '401':
@@ -350,17 +860,19 @@ paths:
     post:
       tags:
         - basic-error-controller
-      summary: errorHtml
-      operationId: errorHtmlUsingPOST
+      summary: error
+      operationId: errorUsingPOST
       consumes:
         - application/json
       produces:
-        - text/html
+        - '*/*'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/ModelAndView'
+            type: object
+            additionalProperties:
+              type: object
         '201':
           description: Created
         '401':
@@ -373,17 +885,19 @@ paths:
     put:
       tags:
         - basic-error-controller
-      summary: errorHtml
-      operationId: errorHtmlUsingPUT
+      summary: error
+      operationId: errorUsingPUT
       consumes:
         - application/json
       produces:
-        - text/html
+        - '*/*'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/ModelAndView'
+            type: object
+            additionalProperties:
+              type: object
         '201':
           description: Created
         '401':
@@ -396,15 +910,17 @@ paths:
     delete:
       tags:
         - basic-error-controller
-      summary: errorHtml
-      operationId: errorHtmlUsingDELETE
+      summary: error
+      operationId: errorUsingDELETE
       produces:
-        - text/html
+        - '*/*'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/ModelAndView'
+            type: object
+            additionalProperties:
+              type: object
         '204':
           description: No Content
         '401':
@@ -415,17 +931,19 @@ paths:
     options:
       tags:
         - basic-error-controller
-      summary: errorHtml
-      operationId: errorHtmlUsingOPTIONS
+      summary: error
+      operationId: errorUsingOPTIONS
       consumes:
         - application/json
       produces:
-        - text/html
+        - '*/*'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/ModelAndView'
+            type: object
+            additionalProperties:
+              type: object
         '204':
           description: No Content
         '401':
@@ -436,17 +954,19 @@ paths:
     patch:
       tags:
         - basic-error-controller
-      summary: errorHtml
-      operationId: errorHtmlUsingPATCH
+      summary: error
+      operationId: errorUsingPATCH
       consumes:
         - application/json
       produces:
-        - text/html
+        - '*/*'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/ModelAndView'
+            type: object
+            additionalProperties:
+              type: object
         '204':
           description: No Content
         '401':
@@ -455,7 +975,35 @@ paths:
           description: Forbidden
       deprecated: false
 definitions:
-  MedicalDoctor:
+  Clinic:
+    type: object
+    properties:
+      clinicAddress:
+        $ref: '#/definitions/ClinicAddress'
+      clinicName:
+        type: string
+      doctors:
+        type: array
+        items:
+          $ref: '#/definitions/Doctor'
+      id:
+        type: integer
+        format: int32
+    title: Clinic
+  ClinicAddress:
+    type: object
+    properties:
+      city:
+        type: string
+      id:
+        type: integer
+        format: int32
+      street:
+        type: string
+      zipCode:
+        type: string
+    title: ClinicAddress
+  Doctor:
     type: object
     properties:
       firstName:
@@ -476,7 +1024,7 @@ definitions:
           $ref: '#/definitions/Specialty'
       telephone:
         type: string
-    title: MedicalDoctor
+    title: Doctor
   ModelAndView:
     type: object
     properties:
@@ -580,9 +1128,6 @@ definitions:
         type: string
       patientAddress:
         $ref: '#/definitions/PatientAddress'
-      patient_id:
-        type: integer
-        format: int32
       personalID:
         type: string
       telephone:
@@ -610,11 +1155,11 @@ definitions:
   Specialty:
     type: object
     properties:
+      doctors:
+        $ref: '#/definitions/Doctor'
       id:
         type: integer
         format: int32
-      medicalDoctors:
-        $ref: '#/definitions/MedicalDoctor'
       specialtyName:
         type: string
     title: Specialty
@@ -632,9 +1177,6 @@ definitions:
         format: int32
       patient:
         $ref: '#/definitions/Patient'
-      patientPersonalID:
-        type: integer
-        format: int32
       visitDate:
         type: string
         example: dd/MM/yyyy

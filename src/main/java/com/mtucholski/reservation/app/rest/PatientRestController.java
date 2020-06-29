@@ -47,7 +47,7 @@ public class PatientRestController {
         Patient patient = clinicService.findPatientById(patientId);
 
         log.info("patient found with id:" + "" + patientId);
-        return new ResponseEntity<>(patient, HttpStatus.OK);
+        return new ResponseEntity<>(patient, HttpStatus.FOUND);
     }
 
     @RequestMapping(path = "/patientLastName/{lastName}", method = RequestMethod.GET, produces = "application/json")
@@ -59,7 +59,7 @@ public class PatientRestController {
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/addPatient", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(path = "/addPatient", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity<Patient> addNewPatient(@RequestBody @Valid Patient patient, BindingResult result,
                                                  UriComponentsBuilder builder){
 
@@ -80,7 +80,7 @@ public class PatientRestController {
         return new ResponseEntity<>(patient, headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path = "/patientUpdate", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(path = "/patientUpdate", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public ResponseEntity<Patient> updatePatient(@RequestBody @Valid Patient patient, BindingResult result){
 
         BindingErrorsResponse errors = new BindingErrorsResponse();

@@ -1,9 +1,5 @@
 package com.mtucholski.reservation.app.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mtucholski.reservation.app.json.CustomClinicDeserializer;
-import com.mtucholski.reservation.app.json.CustomClinicSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,8 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Data
-@JsonDeserialize(using = CustomClinicDeserializer.class)
-@JsonSerialize(using = CustomClinicSerializer.class)
 public class Clinic extends BaseEntity {
 
     @Column(name = "clinic_name", nullable = false)
@@ -31,9 +25,9 @@ public class Clinic extends BaseEntity {
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String clinicName;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = MedicalDoctor.class )
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Doctor.class )
     @JoinTable(name = "doctors", joinColumns = @JoinColumn(name = "doctor_id"))
-    private List<MedicalDoctor> doctors;
+    private List<Doctor> doctors;
 
     @ManyToOne (targetEntity = ClinicAddress.class, cascade = CascadeType.ALL)
     private ClinicAddress clinicAddress;

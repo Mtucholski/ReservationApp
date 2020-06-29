@@ -1,8 +1,6 @@
 package com.mtucholski.reservation.app.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mtucholski.reservation.app.json.CustomVisitSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,7 +19,6 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonSerialize(using = CustomVisitSerializer.class)
 public class Visit extends BaseEntity {
 
     /**
@@ -40,15 +37,8 @@ public class Visit extends BaseEntity {
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String visitDescription;
 
-    @Column
-    @NotEmpty
-    private int patientPersonalID;
-
     @ManyToOne(targetEntity = Patient.class, cascade = CascadeType.ALL)
-    @JoinColumns({
-            @JoinColumn(name = "patient_id", insertable = false, updatable = false),
-            @JoinColumn(name = "visit_id", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private Patient patient;
 
 }

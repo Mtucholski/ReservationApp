@@ -66,7 +66,7 @@ create unique index if not exists doctors_doctor_id_uindex
     on doctors (doctor_id);
 
 create unique index if not exists doctors_medical_license_number_uindex
-    on doctors (medical_license_number);
+    on doctors (license_number);
 
 create unique index if not exists doctors_personal_id_uindex
     on doctors (personal_id);

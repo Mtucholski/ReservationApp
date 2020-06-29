@@ -1,7 +1,7 @@
 package com.mtucholski.reservation.app.rest;
 
 import com.mtucholski.reservation.app.exceptions.BindingErrorsResponse;
-import com.mtucholski.reservation.app.model.MedicalDoctor;
+import com.mtucholski.reservation.app.model.Doctor;
 import com.mtucholski.reservation.app.service.MedicalClinicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("api/vets")
+@RequestMapping("api/doctors")
 @PreAuthorize("hasRole(@roles.OWNER)")
 @Slf4j
 public class MedicalDoctorRestController {
@@ -38,9 +38,9 @@ public class MedicalDoctorRestController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<MedicalDoctor>> getAllDoctors() {
+    public ResponseEntity<List<Doctor>> getAllDoctors() {
 
-        List<MedicalDoctor> doctors = new ArrayList<>(clinicService.findDoctors());
+        List<Doctor> doctors = new ArrayList<>(clinicService.findDoctors());
 
         if (doctors.isEmpty()) {
 
@@ -52,26 +52,26 @@ public class MedicalDoctorRestController {
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{licenseNumber}", produces = "application/json", params = "licenseNumber")
-    public ResponseEntity<MedicalDoctor> getDoctorNyLicenseNumber(@PathVariable("licenseNumber") int medicalLicenseNumber) {
+    @GetMapping(value = "/findLicense/{licenseNumber}", produces = "application/json")
+    public ResponseEntity<Doctor> getDoctorNyLicenseNumber(@PathVariable("licenseNumber") int medicalLicenseNumber) {
 
-        MedicalDoctor doctor = clinicService.findDoctorByLicenseNumber(medicalLicenseNumber);
-
-        return new ResponseEntity<>(doctor, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{doctorId}", produces = "application/json", params = "doctorId")
-    public ResponseEntity<MedicalDoctor> findDoctorById(@PathVariable("doctorId") int id) {
-
-        MedicalDoctor doctor = clinicService.findDoctorById(id);
+        Doctor doctor = clinicService.findDoctorByLicenseNumber(medicalLicenseNumber);
 
         return new ResponseEntity<>(doctor, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{specialtyName}", produces = "application/json", params = "specialtyName")
-    public ResponseEntity<List<MedicalDoctor>> getDoctorsWithSpecialty(@PathVariable("specialtyName") String specialtyName){
+    @GetMapping(value = "/{doctorId}", produces = "application/json")
+    public ResponseEntity<Doctor> findDoctorById(@PathVariable("doctorId") int id) {
 
-        List<MedicalDoctor> doctors = clinicService.findBySpecialtyName(specialtyName);
+        Doctor doctor = clinicService.findDoctorById(id);
+
+        return new ResponseEntity<>(doctor, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findSpecialty/{specialtyName}", produces = "application/json")
+    public ResponseEntity<List<Doctor>> getDoctorsWithSpecialty(@PathVariable("specialtyName") String specialtyName){
+
+        List<Doctor> doctors = clinicService.findBySpecialtyName(specialtyName);
 
         if (doctors.isEmpty()){
 
@@ -81,8 +81,8 @@ public class MedicalDoctorRestController {
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/addVet")
-    public ResponseEntity<MedicalDoctor> addDoctor(@RequestBody @Valid MedicalDoctor doctor, BindingResult result, UriComponentsBuilder uri){
+    @PostMapping(value = "/addDoctor", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Doctor> addDoctor(@RequestBody @Valid Doctor doctor, BindingResult result, UriComponentsBuilder uri){
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -99,8 +99,8 @@ public class MedicalDoctorRestController {
         return new ResponseEntity<>(doctor, headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<MedicalDoctor> updateDoctor( @RequestBody @Valid MedicalDoctor newDoctor, BindingResult result){
+    @RequestMapping(value = "/updateDoctor", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    public ResponseEntity<Doctor> updateDoctor(@RequestBody @Valid Doctor newDoctor, BindingResult result){
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -116,10 +116,10 @@ public class MedicalDoctorRestController {
 
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteDoctor/{id}", method = RequestMethod.DELETE,consumes = "application/json")
     public ResponseEntity<Void> deleteDoctor(@PathVariable("id") int id){
 
-        MedicalDoctor doctor = clinicService.findDoctorById(id);
+        Doctor doctor = clinicService.findDoctorById(id);
         clinicService.deleteDoctor(doctor);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

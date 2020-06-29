@@ -1,7 +1,7 @@
 package com.mtucholski.reservation.app.repositories.jpa;
 
 import com.mtucholski.reservation.app.exceptions.ClinicException;
-import com.mtucholski.reservation.app.model.MedicalDoctor;
+import com.mtucholski.reservation.app.model.Doctor;
 import com.mtucholski.reservation.app.repositories.MedicalDoctorRepository;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,39 +23,61 @@ public class MedicalRepositoryImpl implements MedicalDoctorRepository {
     private EntityManager manager;
 
     @Override
-    public List<MedicalDoctor> findAll() {
+    public List<Doctor> findAll() {
 
         log.info("finding all doctors");
         return this.manager.createQuery("select doctors from doctors").getResultList();
     }
 
     @Override
-    public List<MedicalDoctor> findBySpecialtyName(String specialtyName) {
+    public List<Doctor> findBySpecialtyName(String specialtyName) {
 
+        List<Doctor> returnedDoctors = new ArrayList<>();
         log.info("finding doctors by specialty");
-        return this.manager.createQuery("select doctors from doctors doctors where doctors.specialties =: specialtyName").getResultList();
+        List<Doctor> doctors = this.manager.createQuery("select doctors from doctors ").getResultList();
+
+        for (Doctor doctor : doctors) {
+
+            if (doctor.getSpecialties().stream().allMatch(specialty1 -> specialty1.getSpecialtyName().equals(specialtyName))){
+
+                returnedDoctors.add(doctor);
+            }
+        }
+
+        return  returnedDoctors;
     }
 
     @Override
-    public MedicalDoctor findByLicenseNumber(int license) {
+    public Doctor findByLicenseNumber(int license) {
 
+        Doctor medic = new Doctor();
         log.info("find doctor by license number");
-        return (MedicalDoctor) this.manager.createQuery("select doctors from doctors doctors where doctors.medicalLicenseNumber =: license").getSingleResult();
+        List<Doctor> doctors = this.manager.createQuery("select doctors  from doctors ").getResultList();
+
+        for (Doctor doctor : doctors){
+
+            if (doctor.getMedicalLicenseNumber().equals(license)){
+
+                medic = doctor;
+            }
+        }
+
+        return medic;
     }
 
     @Override
-    public MedicalDoctor findById(int id) {
+    public Doctor findById(int id) {
 
         log.info("find doctor by id");
-        return this.manager.find(MedicalDoctor.class, id);
+        return this.manager.find(Doctor.class, id);
     }
 
     @Override
 
-    public void save(MedicalDoctor doctor) {
+    public void save(Doctor doctor) {
 
         log.info("checking if id is null");
-        if (doctor.getId() == null){
+        if (doctor.getId() == null) {
 
             log.info("persisting cause id is null");
             this.manager.persist(doctor);
@@ -66,18 +89,18 @@ public class MedicalRepositoryImpl implements MedicalDoctorRepository {
     }
 
     @Override
-    public void delete(MedicalDoctor doctor) {
+    public void delete(Doctor doctor) {
 
         log.info("removing doctor with id:" + "" + doctor.getId());
         this.manager.remove(doctor);
     }
 
     @Override
-    public void update(MedicalDoctor doctor) throws ClinicException {
+    public void update(Doctor doctor) throws ClinicException {
 
-        MedicalDoctor oldDoctor = (MedicalDoctor) this.manager.createQuery("select doctor from doctors doctor where doctor.id = :id").getSingleResult();
+        Doctor oldDoctor = this.manager.find(Doctor.class, doctor.getId());
 
-        if (oldDoctor !=null){
+        if (oldDoctor != null) {
 
             oldDoctor.setMedicalLicenseNumber(doctor.getMedicalLicenseNumber());
             oldDoctor.setSpecialties(doctor.getSpecialties());
@@ -86,7 +109,7 @@ public class MedicalRepositoryImpl implements MedicalDoctorRepository {
             oldDoctor.setPersonalID(doctor.getPersonalID());
             oldDoctor.setTelephone(doctor.getTelephone());
             this.manager.flush();
-        }else {
+        } else {
 
             throw new ClinicException();
         }

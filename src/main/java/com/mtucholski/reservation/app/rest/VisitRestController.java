@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +43,7 @@ public class VisitRestController {
     }
 
     @PreAuthorize("hasRole(@roles.OWNER) or hasRole(@roles.DOCTOR)")
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity<Visit> addVisit(@RequestBody @Valid Visit visit, BindingResult bindingResult, UriComponentsBuilder ucBuilder) {
 
         BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -62,7 +61,7 @@ public class VisitRestController {
     }
 
     @PreAuthorize("hasRole(@roles.OWNER) or hasRole(@roles.DOCTOR)")
-    @RequestMapping(value = "/{visitId}", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/updateVisit", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public ResponseEntity<Visit> updateVisit(@RequestBody @Valid Visit visit, BindingResult bindingResult) {
 
         BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -79,10 +78,8 @@ public class VisitRestController {
     }
 
     @PreAuthorize("hasRole(@roles.OWNER)")
-    @RequestMapping(value = "/{visitId}", method = RequestMethod.DELETE, produces = "application/json")
-    public ResponseEntity<Void> deleteVisit(@PathVariable("visitId") int visitId) {
-
-        Visit visit = this.clinicService.findVisitsById(visitId);
+    @RequestMapping(value = "/deleteVisit", method = RequestMethod.DELETE, consumes = "application/json")
+    public ResponseEntity<Void> deleteVisit(@RequestBody @Valid Visit visit) {
 
         this.clinicService.delete(visit);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

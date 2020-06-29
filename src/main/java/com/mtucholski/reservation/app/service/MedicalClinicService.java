@@ -25,13 +25,13 @@ public interface MedicalClinicService {
     void delete(Visit visit) throws ClinicException;
     void updateVisit(Visit visit) throws ClinicException;
 
-    MedicalDoctor findDoctorByLicenseNumber(int licenseNumber) throws ClinicException;
-    MedicalDoctor findDoctorById(int id) throws ClinicException;
-    List<MedicalDoctor> findBySpecialtyName(String specialtyName) throws ClinicException;
-    List<MedicalDoctor> findDoctors() throws ClinicException;
-    void saveDoctor (MedicalDoctor doctor) throws ClinicException;
-    void deleteDoctor(MedicalDoctor doctor) throws ClinicException;
-    void updateDoctor(MedicalDoctor doctor) throws ClinicException;
+    Doctor findDoctorByLicenseNumber(int licenseNumber) throws ClinicException;
+    Doctor findDoctorById(int id) throws ClinicException;
+    List<Doctor> findBySpecialtyName(String specialtyName) throws ClinicException;
+    List<Doctor> findDoctors() throws ClinicException;
+    void saveDoctor (Doctor doctor) throws ClinicException;
+    void deleteDoctor(Doctor doctor) throws ClinicException;
+    void updateDoctor(Doctor doctor) throws ClinicException;
 
     Specialty findSpecialtyById(int id) throws ClinicException;
     Specialty findSpecialtyByName(String name)throws ClinicException;

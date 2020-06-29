@@ -22,6 +22,6 @@ public class Specialty extends BaseEntity {
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String specialtyName;
 
-    @ManyToOne(optional = false,fetch = FetchType.LAZY, targetEntity = MedicalDoctor.class, cascade = CascadeType.PERSIST)
-    private MedicalDoctor medicalDoctors;
+    @ManyToOne(optional = false,fetch = FetchType.LAZY, targetEntity = Doctor.class, cascade = CascadeType.PERSIST)
+    private Doctor doctors;
 }

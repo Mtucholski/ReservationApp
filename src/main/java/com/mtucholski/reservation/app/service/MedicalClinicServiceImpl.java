@@ -227,10 +227,10 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
 
     @Override
     @Transactional(timeout = 10000, readOnly = true, rollbackFor = ClinicException.class, noRollbackFor = Error.class)
-    public MedicalDoctor findDoctorByLicenseNumber(int licenseNumber) throws ClinicException {
+    public Doctor findDoctorByLicenseNumber(int licenseNumber) throws ClinicException {
 
         log.info("looking for doctor with license number" + "" + licenseNumber);
-        MedicalDoctor doctor = RESTApiClientWrapper.request(()-> medicalDoctorRepository.findByLicenseNumber(licenseNumber))
+        Doctor doctor = RESTApiClientWrapper.request(()-> medicalDoctorRepository.findByLicenseNumber(licenseNumber))
                 .messageDataIsNull("data is null. No doctor with given license number")
                 .messageDataNotFound("data not found")
                 .messageError("error")
@@ -244,10 +244,10 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
 
     @Override
     @Transactional(readOnly = true, timeout = 10000)
-    public MedicalDoctor findDoctorById(int id) throws ClinicException {
+    public Doctor findDoctorById(int id) throws ClinicException {
 
         log.info("looking for doctor with id:" + " "+ id);
-        MedicalDoctor doctor = RESTApiClientWrapper.request(()-> medicalDoctorRepository.findById(id))
+        Doctor doctor = RESTApiClientWrapper.request(()-> medicalDoctorRepository.findById(id))
                 .messageError("something wrong")
                 .messageDataNotFound("data not found")
                 .messageError("something wrong please contact with IT support")
@@ -258,7 +258,7 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
 
     @Override
     @Transactional(readOnly = true, timeout = 10000)
-    public List<MedicalDoctor> findBySpecialtyName(String specialtyName) throws ClinicException {
+    public List<Doctor> findBySpecialtyName(String specialtyName) throws ClinicException {
 
         if (specialtyName.isEmpty()){
 
@@ -275,7 +275,7 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
 
     @Override
     @Transactional(readOnly = true, timeout = 10000)
-    public List<MedicalDoctor> findDoctors() throws ClinicException {
+    public List<Doctor> findDoctors() throws ClinicException {
 
         log.info("looking for all doctors");
 
@@ -288,7 +288,7 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
 
     @Override
     @Transactional(readOnly = true, timeout = 10000, isolation = Isolation.SERIALIZABLE, noRollbackFor = Error.class)
-    public void saveDoctor(MedicalDoctor doctor) throws ClinicException {
+    public void saveDoctor(Doctor doctor) throws ClinicException {
 
         if (doctor == null){
 
@@ -301,7 +301,7 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
 
     @Override
     @Transactional(timeout = 10000, isolation = Isolation.SERIALIZABLE, rollbackFor = ClinicException.class, noRollbackFor = Error.class)
-    public void deleteDoctor(MedicalDoctor doctor) throws ClinicException {
+    public void deleteDoctor(Doctor doctor) throws ClinicException {
 
         if (doctor == null){
 
@@ -314,7 +314,7 @@ public class MedicalClinicServiceImpl implements MedicalClinicService {
 
     @Override
     @Transactional(timeout = 10000, isolation = Isolation.SERIALIZABLE, rollbackFor = RuntimeException.class, noRollbackFor = Error.class)
-    public void updateDoctor(MedicalDoctor doctor) throws ClinicException {
+    public void updateDoctor(Doctor doctor) throws ClinicException {
 
         if (doctor == null){
 

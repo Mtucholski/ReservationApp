@@ -80,7 +80,6 @@ private EntityManager manager;
 
             oldVisit.setVisitDescription(visit.getVisitDescription());
             oldVisit.setPatient(visit.getPatient());
-            oldVisit.setPatientPersonalID(visit.getPatientPersonalID());
             oldVisit.setVisitDate(visit.getVisitDate());
             this.manager.flush();
         }else {

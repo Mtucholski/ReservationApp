@@ -10,14 +10,13 @@ public class ClinicException extends RuntimeException {
     public enum ExceptionType{
 
         BASIC ("Clinic App error. Please contact with admin."),
-        CLINIC_MODULE_LOST("Clinic module is lost. Our maintenance team is working and solving problem"),
         BAD_REQUEST("Bad request. Please try again in the minute"),
         BAD_SERVICE_CALLING("Failure when trying to start service.. Please try again latter or call admin"),
         UNEXPECTED_RESULT("Unexpected service result. Please contact with admin"),
         BAD_ENTRY_DATA("Wrong entry data"),
-        BAD_LOGIN_USER_OR_PASSWORD("Wrong authentication data."),
+        NOT_FOUND ("not found"),
         PLAIN_TEXT("");
-        private String statementInfo;
+        private final String statementInfo;
         ExceptionType(String statementInfo){
 
             this.statementInfo = statementInfo;
@@ -86,11 +85,6 @@ public class ClinicException extends RuntimeException {
         this.logMessage = logMessage;
     }
 
-    public ExceptionType getExceptionType(){
-
-        return exceptionType;
-    }
-
     @Override
     public String getMessage() {
 
@@ -105,7 +99,7 @@ public class ClinicException extends RuntimeException {
 
             if (super.getMessage() !=null){
 
-                builder.append("").append(super.getMessage());
+                builder.append(super.getMessage());
             }
         }
 

@@ -1,9 +1,5 @@
 package com.mtucholski.reservation.app.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mtucholski.reservation.app.json.CustomPatientAddressDeserializer;
-import com.mtucholski.reservation.app.json.CustomPatientAddressSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,8 +16,6 @@ import javax.validation.constraints.Pattern;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonSerialize(using = CustomPatientAddressSerializer.class)
-@JsonDeserialize(using = CustomPatientAddressDeserializer.class)
 public class PatientAddress extends BaseEntity {
 
     @Column (name = "city", nullable = false)

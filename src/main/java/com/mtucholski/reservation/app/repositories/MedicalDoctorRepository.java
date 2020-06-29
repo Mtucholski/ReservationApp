@@ -1,17 +1,17 @@
 package com.mtucholski.reservation.app.repositories;
 
 import com.mtucholski.reservation.app.exceptions.ClinicException;
-import com.mtucholski.reservation.app.model.MedicalDoctor;
+import com.mtucholski.reservation.app.model.Doctor;
 
 import java.util.List;
 
 public interface MedicalDoctorRepository {
 
-    List<MedicalDoctor> findAll();
-    List<MedicalDoctor> findBySpecialtyName(String specialtyName);
-    MedicalDoctor findByLicenseNumber(int license);
-    MedicalDoctor findById(int id);
-    void save(MedicalDoctor doctor);
-    void delete(MedicalDoctor doctor);
-    void update(MedicalDoctor doctor) throws ClinicException;
+    List<Doctor> findAll();
+    List<Doctor> findBySpecialtyName(String specialtyName);
+    Doctor findByLicenseNumber(int license);
+    Doctor findById(int id);
+    void save(Doctor doctor);
+    void delete(Doctor doctor);
+    void update(Doctor doctor) throws ClinicException;
 }

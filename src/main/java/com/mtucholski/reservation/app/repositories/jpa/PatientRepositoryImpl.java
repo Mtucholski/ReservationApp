@@ -1,5 +1,6 @@
 package com.mtucholski.reservation.app.repositories.jpa;
 
+import com.mtucholski.reservation.app.exceptions.ClinicException;
 import com.mtucholski.reservation.app.model.Patient;
 import com.mtucholski.reservation.app.repositories.PatientRepository;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -34,29 +37,41 @@ public class PatientRepositoryImpl implements PatientRepository {
     @Override
     public List<Patient> findByLastName(String lastName) throws DataAccessException {
 
+        List<Patient> patientList = new ArrayList<>();
         log.info("searching for patient with last_name:" + "" + lastName);
-        Query query = this.entityManager.createQuery(
-                "SELECT patient from patients patient left join fetch patient_address where patient.lastName LIKE :lastName");
+        List<Patient> patients = this.entityManager.createQuery("select patients from patients ").getResultList();
 
-        query.setParameter("lastName", lastName + "%");
+        for (Patient patient : patients){
+
+            if (patient.getLastName().equals(lastName)){
+
+                patientList.add(patient);
+            }
+        }
         log.info("found patient with last name:" + "" + lastName);
-        return query.getResultList();
+        return patientList;
     }
 
     @Override
     public Patient findByPersonalId(String personalId) throws DataAccessException {
 
-        Query query = this.entityManager.createQuery("select patient from patients patient where patient.personalID = :personalId");
-        query.setParameter("personalId", personalId);
-        return (Patient) query.getSingleResult();
+        List<Patient> patients = this.entityManager.createQuery("select patients from patients ").getResultList();
+
+        Optional<Patient> patient = patients.stream().filter(patient1 -> patient1.getPersonalID().equals(personalId)).findFirst();
+
+        if (patient.isPresent()){
+
+            return patient.get();
+        }else {
+
+            throw new ClinicException(ClinicException.ExceptionType.NOT_FOUND);
+        }
     }
 
     @Override
     public Patient findById(int id) throws DataAccessException {
 
-        Query query = this.entityManager.createQuery("select patient from patients patient where patient.id = :id");
-        query.setParameter("id", id);
-        return (Patient) query.getSingleResult();
+        return this.entityManager.find(Patient.class, id);
     }
 
     @Override
