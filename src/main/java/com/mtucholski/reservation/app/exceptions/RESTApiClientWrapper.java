@@ -70,6 +70,10 @@ public class RESTApiClientWrapper<T> {
         return this;
     }
 
+    /**
+     * Private method for logging errors
+     * @param error exception
+     */
     private void logError(Exception error) {
 
         if (this.errorMessage != null && this.errorMessage.trim().isEmpty()) {
@@ -86,23 +90,24 @@ public class RESTApiClientWrapper<T> {
 
         } catch (NullPointerException exception) {
 
-
-            throw new ClinicException(ClinicException.ExceptionType.UNEXPECTED_RESULT, messageDataIsNull, exception.getCause(),
+            log.log(Level.SEVERE, this.errorMessage + "" + exception.getMessage());
+            throw new ClinicException(ClinicException.ExceptionType.DATA_IS_NULL, messageDataIsNull, exception.getCause(),
                     errorMessage);
 
         } catch (HttpClientErrorException errorException) {
 
-            logError(errorException);
             log.log(Level.SEVERE, this.errorMessage + "" + errorException.getMessage());
 
             if (errorException.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
 
+                logError(errorException);
+                log.log(Level.SEVERE, this.errorMessage + "" + errorException.getMessage());
                 throw new ClinicException(ClinicException.ExceptionType.BAD_ENTRY_DATA, errorException.getMessage(), errorException, errorMessage);
             }
 
             throw new ClinicException(ClinicException.ExceptionType.BAD_REQUEST, errorException.getMessage(), errorException, errorMessage);
 
-        } catch (RestClientException error){
+        } catch (RestClientException error) {
 
             logError(error);
             log.log(Level.SEVERE, this.errorMessage + "" + error.getMessage());

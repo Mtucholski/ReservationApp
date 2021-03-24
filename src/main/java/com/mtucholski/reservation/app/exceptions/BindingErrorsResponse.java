@@ -15,7 +15,6 @@ import java.util.Objects;
 
 @Data
 @Component
-
 public class BindingErrorsResponse {
 
     public BindingErrorsResponse() {

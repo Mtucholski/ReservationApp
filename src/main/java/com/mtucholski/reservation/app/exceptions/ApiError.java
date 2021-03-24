@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * class for creating ApiError
+ * @author mtucholski
+ */
 @Component
 @Getter
 @Setter

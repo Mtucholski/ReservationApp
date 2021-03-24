@@ -3,6 +3,9 @@ package com.mtucholski.reservation.app.exceptions;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Application exception class
+ */
 @Getter
 @NoArgsConstructor
 public class ClinicException extends RuntimeException {
@@ -15,8 +18,11 @@ public class ClinicException extends RuntimeException {
         UNEXPECTED_RESULT("Unexpected service result. Please contact with admin"),
         BAD_ENTRY_DATA("Wrong entry data"),
         NOT_FOUND ("not found"),
-        PLAIN_TEXT("");
+        PLAIN_TEXT(""),
+        DATA_IS_NULL("Data is null");
+
         private final String statementInfo;
+
         ExceptionType(String statementInfo){
 
             this.statementInfo = statementInfo;

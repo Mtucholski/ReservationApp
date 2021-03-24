@@ -54,7 +54,7 @@ public class ExceptionsControllerAdvice {
     public ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
 
         log.error("access denied" + " " + ex.getCause() + "" + request);
-        return new ResponseEntity<>("Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Access denied", new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
     private static class ErrorInfo {

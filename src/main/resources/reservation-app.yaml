@@ -253,9 +253,9 @@ paths:
       produces:
         - '*/*'
       parameters:
-        - name: id
+        - name: address_id
           in: path
-          description: id
+          description: address_id
           required: true
           type: integer
           format: int32

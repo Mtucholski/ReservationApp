@@ -20,7 +20,7 @@ public class ClinicValidation implements Validator {
         Clinic clinic = (Clinic) object;
 
         log.info("checking if fields are empty");
-        if (clinic.getClinicName().isEmpty() || clinic.getDoctors().isEmpty()){
+        if (clinic.getClinicName().isEmpty() || clinic.getDoctors() == null){
 
             log.error("required fields cannot be empty");
             errors.reject("clinic fields are empty");

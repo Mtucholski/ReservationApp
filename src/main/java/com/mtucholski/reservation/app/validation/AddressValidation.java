@@ -1,6 +1,6 @@
 package com.mtucholski.reservation.app.validation;
 
-import com.mtucholski.reservation.app.model.PatientAddress;
+import com.mtucholski.reservation.app.model.Address;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,29 +14,28 @@ public class AddressValidation implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return PatientAddress.class.equals(aClass);
+        return Address.class.equals(aClass);
     }
 
     @Override
     public void validate(Object object, Errors errors) {
 
         String cityRegex = "^[\\p{L} .'-]+$";
-        PatientAddress patientAddress = (PatientAddress) object;
+        Address potentialAddress = (Address) object;
 
         log.info("checking if patientAddress fields are empty");
-        if (patientAddress.getCity().isEmpty() || patientAddress.getStreet().isEmpty() || patientAddress.getFlatNumber().isEmpty()){
+        if (potentialAddress.getCity().isEmpty() || potentialAddress.getStreet().isEmpty()){
 
             errors.reject("[PatientAddress] cannot be null");
             log.error("encountered errors during patientAddress validation:" + "" + errors);
 
         }
 
-        log.info("patientAddress fields aren't empty");
         log.info("checking if patientAddress fields match pattern");
-        if (!(patientAddress.getCity()).matches(cityRegex) && !(patientAddress.getStreet().matches(cityRegex))){
+        if (!(potentialAddress.getCity()).matches(cityRegex) && !(potentialAddress.getStreet().matches(cityRegex))){
 
             errors.reject("patientAddress city and street must match pattern");
-            log.error("patientAddress city and street doesn't match pattern:" + "" + cityRegex);
+            log.error("patientAddress city  doesn't match pattern:" + "" + cityRegex);
         }
     }
 }
