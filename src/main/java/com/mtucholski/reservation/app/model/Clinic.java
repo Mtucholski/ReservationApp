@@ -10,6 +10,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -34,7 +35,7 @@ public class Clinic implements Serializable, Cloneable {
     @CreationTimestamp
     private Instant creationDate;
 
-    @Column(name = "close_date", nullable = false)
+    @Column(name = "close_date")
     @CreationTimestamp
     private Instant closeDate;
 
@@ -53,18 +54,21 @@ public class Clinic implements Serializable, Cloneable {
     private String clinicName;
 
     @Column(name = "validation_status", nullable = false)
-    private VaildationStatus vaildationStatus;
+    private ValidationStatus validationStatus;
 
-    @JsonManagedReference
+    @Column(name = "valid")
+    @NotNull
+    private Boolean isValid;
+
+    @JsonManagedReference(value = "address")
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "clinic", orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = Address.class, fetch = FetchType.EAGER)
     private List<Address> addresses;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Doctor.class )
-    @JoinTable(name = "doctors", joinColumns = @JoinColumn(name = "doctor_id"))
-    @JsonManagedReference
+    @OneToMany(mappedBy = "clinic", orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = Doctor.class, fetch = FetchType.EAGER)
+    @JsonManagedReference(value = "doctors")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Doctor doctors;
+    private List<Doctor> doctors;
 
 
     @Override

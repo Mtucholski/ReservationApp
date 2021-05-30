@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode()
@@ -36,7 +35,7 @@ public class Doctor implements Serializable {
     private Integer medicalLicenseNumber;
 
     @Column(name = "validation_status", nullable = false)
-    private VaildationStatus vaildationStatus;
+    private ValidationStatus validationStatus;
 
     @Tolerate
     public Doctor(){
@@ -44,6 +43,6 @@ public class Doctor implements Serializable {
     }
 
     @JsonBackReference
-    @OneToMany(mappedBy = "clinic", targetEntity = Clinic.class, orphanRemoval = true, cascade = CascadeType.REMOVE)
-    private List<Clinic> clinicList;
+    @ManyToOne(targetEntity = Clinic.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+    private Clinic clinic;
 }

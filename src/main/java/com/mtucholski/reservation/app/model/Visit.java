@@ -46,7 +46,7 @@ public class Visit implements Serializable, Cloneable {
     private String visitDescription;
 
     @Column(name = "validation_status", nullable = false)
-    private VaildationStatus vaildationStatus;
+    private ValidationStatus validationStatus;
 
     @JsonBackReference
     @ManyToOne(targetEntity = Patient.class, cascade = CascadeType.ALL)

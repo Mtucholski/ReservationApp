@@ -1,21 +1,26 @@
 package com.mtucholski.reservation.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
+import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Optional;
 
 @Entity
 @Builder
 @Data
+@Scope()
 public class Address {
 
     @Tolerate
     public Address(){}
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +32,7 @@ public class Address {
     private String city;
 
     @Column(name = "street")
-    @NotNull
+   // @NotNull
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String street;
 
@@ -41,10 +46,25 @@ public class Address {
 
     @Column(name = "validation_status", nullable = false)
     @Enumerated (EnumType.STRING)
-    private VaildationStatus vaildationStatus;
+    private ValidationStatus validationStatus;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(targetEntity = Clinic.class)
     @JoinColumn(name = "clinic_id", nullable = false)
     private Clinic clinic;
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+//    public void setAddressStreet(String street){
+//
+//        Address address = new Address();
+//        address.setStreet(street);
+//
+//        String a = "mama";
+//        String b = "tata";
+//        b= "wujek";//  stwórz nowy obiekt tekstowy wujek i przypisz referencje do niego do zmiennej b
+//    }
 }

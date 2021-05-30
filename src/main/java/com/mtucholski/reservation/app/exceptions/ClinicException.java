@@ -64,6 +64,30 @@ public class ClinicException extends RuntimeException {
         this.exceptionType = exceptionType;
     }
 
+    public ClinicException(String message, ExceptionType exceptionType, String logMessage) {
+        super(message);
+        this.exceptionType = exceptionType;
+        this.logMessage = logMessage;
+    }
+
+    public ClinicException(String message, Throwable cause, ExceptionType exceptionType, String logMessage) {
+        super(message, cause);
+        this.exceptionType = exceptionType;
+        this.logMessage = logMessage;
+    }
+
+    public ClinicException(Throwable cause, ExceptionType exceptionType, String logMessage) {
+        super(cause);
+        this.exceptionType = exceptionType;
+        this.logMessage = logMessage;
+    }
+
+    public ClinicException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, ExceptionType exceptionType, String logMessage) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.exceptionType = exceptionType;
+        this.logMessage = logMessage;
+    }
+
     public ClinicException(ExceptionType exceptionType, Throwable cause){
 
         super(cause);

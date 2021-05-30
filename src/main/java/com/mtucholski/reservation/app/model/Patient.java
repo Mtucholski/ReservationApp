@@ -35,7 +35,7 @@ public class Patient implements Serializable, Cloneable {
     @Size(min = 11, max = 11)
     private Long personalId;
 
-    @Column(name = "social_security_number", updatable = true)
+    @Column(name = "social_security_number")
     private Long socialSecurityNumber;
 
     @Column(name = "identity_card_type")
@@ -48,7 +48,7 @@ public class Patient implements Serializable, Cloneable {
     private String email;
 
     @Column(name = "validation_status", nullable = false)
-    private VaildationStatus vaildationStatus;
+    private ValidationStatus validationStatus;
 
     @OneToMany(fetch = FetchType.LAZY, targetEntity = Visit.class, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "patients")
     private List<Visit> visits;
