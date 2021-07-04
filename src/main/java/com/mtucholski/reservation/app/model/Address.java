@@ -1,7 +1,6 @@
 package com.mtucholski.reservation.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Scope;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.Optional;
+import javax.validation.constraints.Size;
 
 @Entity
 @Builder
@@ -21,24 +20,24 @@ public class Address {
     @Tolerate
     public Address(){}
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "city")
     @NotNull
+    @Size(min=3, max = 20, message = "Zbyt długi string")
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String city;
 
     @Column(name = "street")
-   // @NotNull
+    @NotNull
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String street;
 
     @Column(name = "street_number")
     @NotNull
-    @Pattern(regexp = "[A-Z0-9]+")
+    @Pattern(regexp = "[A-Z0-9]+\n")
     private String streetNumber;
 
     @Column(name = "zip_code")
@@ -57,14 +56,4 @@ public class Address {
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
-//    public void setAddressStreet(String street){
-//
-//        Address address = new Address();
-//        address.setStreet(street);
-//
-//        String a = "mama";
-//        String b = "tata";
-//        b= "wujek";//  stwórz nowy obiekt tekstowy wujek i przypisz referencje do niego do zmiennej b
-//    }
 }
